@@ -14,7 +14,6 @@ export class SessionService {
   private _user$ = new BehaviorSubject<UserSimple>(null);
   user$ = this._user$.asObservable();
 
-  // redirect url after logging in
   private _nextUrl = '';
 
   constructor(

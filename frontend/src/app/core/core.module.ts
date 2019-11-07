@@ -6,11 +6,19 @@ import { MaterialModule } from './material.module';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import { SessionService } from './session.service';
+import { NotAuthenticatedGuard } from './guards/not-auth.guard';
+import { AuthenticatedGuard } from './guards/auth.guard';
 
 @NgModule({
   declarations: [],
   imports: [CommonModule, MatIconModule, MaterialModule],
-  providers: [ApiService, AuthService, SessionService],
+  providers: [
+    ApiService,
+    AuthService,
+    AuthenticatedGuard,
+    NotAuthenticatedGuard,
+    SessionService,
+  ],
   exports: [MaterialModule],
 })
 export class CoreModule {
