@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700&display=swap');
+
+html, body {
+  height: 100%;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.intro {
+  background: url("assets/mountain.png");
+  height: calc(100vh - 64px);
+  width: 100%;
+  margin: auto;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

@@ -1,0 +1,17 @@
+:host {
+  .logo {
+    display: flex;
+    align-items: center;
+
+    .icon {
+      filter: brightness(0) invert(1);
+      height: 42px;
+      width: 42px;
+    }
+  }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+  }
+}

@@ -1,0 +1,14 @@
+<mat-toolbar color="primary" class="toolbar">
+  <div class="logo">
+    <img src="../../assets/dolar.png" class="icon">
+    Expenso
+  </div>
+  <span
+    routerLink="/auth/login"
+    *ngIf="!(isLoggedIn | async)"
+  >Login</span>
+  <span
+    (click)="logout()"
+    *ngIf="(isLoggedIn | async)"
+  >Logout</span>
+</mat-toolbar>
