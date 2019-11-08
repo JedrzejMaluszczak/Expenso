@@ -9,6 +9,7 @@ from balance.serializers import (
     CategorySerializer,
     BalanceSerializer,
     CategorySimplySerializer,
+    CategoryBalanceSerializer,
 )
 
 
@@ -23,6 +24,14 @@ class CategoryView(viewsets.ModelViewSet):
             is_income=(request.query_params.get("isIncome") == "true"),
         )
         return Response(CategorySimplySerializer(categories, many=True).data)
+
+    @action(methods=["get"], detail=False)
+    def list_with_balance(self, request, *args, **kwargs):
+        categories = Category.objects.filter(
+            user=request.user,
+            is_income=(request.query_params.get("isIncome") == "true"),
+        )
+        return Response(CategoryBalanceSerializer(categories, many=True).data)
 
 
 class BalanceView(viewsets.ModelViewSet):

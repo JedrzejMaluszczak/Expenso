@@ -1,0 +1,9 @@
+<mat-card>
+  <mat-card-title>{{action}}</mat-card-title>
+  <mat-card-content>
+    <div *ngFor="let category of categories">
+      <span>{{category.name}}</span>
+      <span>{{category.categoryBalance}}</span>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -1,11 +1,5 @@
 export enum Action { Incomes = 'incomes', Expenses = 'expenses'}
 
-export interface Category {
-  id?: number;
-  name: string;
-  isIncome: boolean;
-}
-
 export interface Balance {
   id: number;
   date: Date;

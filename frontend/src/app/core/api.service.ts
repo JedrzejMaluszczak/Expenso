@@ -9,8 +9,8 @@ import { UserSimple } from './user.interface';
 import {
   Balance,
   BalanceSummary,
-  Category
 } from '../budget/budget.interface';
+import { Category, CategoryBalance } from '../categories/categories.interface';
 
 export class HttpQueryEncoderCodec implements HttpParameterCodec {
   encodeKey(k: string): string {
@@ -49,7 +49,13 @@ export class ApiService {
 
   category = {
     list: (isIncome: boolean) =>
-      this.get<Category[]>(`/category/`, { isIncome: isIncome })
+      this.get<Category[]>(`/category/`, { isIncome: isIncome }),
+
+    listWithBalance: (isIncome: boolean) =>
+      this.get<CategoryBalance[]>(
+        `/category/list_with_balance/`,
+        { isIncome: isIncome }
+      ),
   };
 
   balance = {
