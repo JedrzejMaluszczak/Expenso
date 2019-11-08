@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Action } from '../budget.interface';
+import { ActivatedRoute } from '@angular/router';
+
+import { Action, BalanceSummary } from '../budget.interface';
+import { BudgetService } from '../budget.service';
 
 @Component({
   selector: 'app-budget-view',
@@ -9,10 +12,19 @@ import { Action } from '../budget.interface';
 export class BudgetViewComponent implements OnInit {
 
   action = Action;
+  summary: BalanceSummary;
 
-  constructor() { }
+  constructor(
+    private budgetService: BudgetService,
+    private route: ActivatedRoute,
+  ) {
+  }
 
   ngOnInit() {
+    this.summary = this.route.snapshot.data.balanceSummary;
+    this.budgetService.balanceSummary$.subscribe(
+      value => this.summary = value
+    );
   }
 
 }

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
-import { Action, Category } from '../budget.interface';
+import { Action, Category, Summary } from '../budget.interface';
 import {
   AddBalanceDialogComponent
 } from '../add-balance-dialog/add-balance-dialog.component';
@@ -22,6 +22,8 @@ export class BalanceComponent implements OnInit {
 
   @Input() action: Action;
 
+  @Input()summary: Summary;
+
   constructor(
     private dialog: MatDialog,
     private api: ApiService,
@@ -34,7 +36,7 @@ export class BalanceComponent implements OnInit {
 
   async openDialog() {
     const categories = await this.api.category.list(
-      this.action === Action.Income
+      this.action === Action.Incomes
     );
     const dialogRef = this.dialog.open(AddBalanceDialogComponent, {
       width: '300px',

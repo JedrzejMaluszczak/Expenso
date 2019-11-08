@@ -6,7 +6,11 @@ import {
 import { Injectable } from '@angular/core';
 import { LoginForm, RegisterForm } from '../auth/auth.interface';
 import { UserSimple } from './user.interface';
-import { Action, Balance, Category } from '../budget/budget.interface';
+import {
+  Balance,
+  BalanceSummary,
+  Category
+} from '../budget/budget.interface';
 
 export class HttpQueryEncoderCodec implements HttpParameterCodec {
   encodeKey(k: string): string {
@@ -50,6 +54,7 @@ export class ApiService {
 
   balance = {
     create: (balance: Balance) => this.post<Balance>(`/balance/`, balance),
+    summary: () => this.get<BalanceSummary>(`/balance/balance_summary/`),
   };
 
   constructor(public http: HttpClient) {

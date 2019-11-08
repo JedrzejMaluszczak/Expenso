@@ -1,4 +1,4 @@
-export enum Action { Income = 'income', Expenses = 'expenses'}
+export enum Action { Incomes = 'incomes', Expenses = 'expenses'}
 
 export interface Category {
   id?: number;
@@ -12,4 +12,15 @@ export interface Balance {
   value: number;
   note?: string;
   category: number;
+}
+
+export interface BalanceSummary {
+  incomes: Summary;
+  expenses: Summary;
+}
+
+export interface Summary {
+  today: number;
+  monthly: number;
+  total: number;
 }
