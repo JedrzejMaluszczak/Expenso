@@ -1,15 +1,29 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { BudgetRoutingModule } from './budget-routing.module';
 import { BudgetViewComponent } from './budget-view/budget-view.component';
+import { CoreModule } from '../core/core.module';
+import { BalanceComponent } from './balance/balance.component';
+import {
+  AddBalanceDialogComponent
+} from './add-balance-dialog/add-balance-dialog.component';
 
 
 @NgModule({
-  declarations: [BudgetViewComponent],
+  declarations: [
+    BudgetViewComponent,
+    BalanceComponent,
+    AddBalanceDialogComponent,
+  ],
   imports: [
     CommonModule,
-    BudgetRoutingModule
-  ]
+    BudgetRoutingModule,
+    CoreModule,
+    ReactiveFormsModule,
+  ],
+  entryComponents: [AddBalanceDialogComponent]
 })
-export class BudgetModule { }
+export class BudgetModule {
+}

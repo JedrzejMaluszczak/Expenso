@@ -1,0 +1,56 @@
+:host {
+  max-width: 600px;
+  width: 100%;
+  margin: 10px;
+
+  .balance-card {
+
+    .title-row {
+      font-size: 24px;
+      font-weight: 500;
+      align-items: center;
+      display: flex;
+      justify-content: space-between;
+
+      mat-icon {
+        font-size: 45px;
+        height: 45px;
+        width: 45px;
+      }
+
+      mat-icon:focus {
+        outline: none;
+      }
+
+      mat-icon:hover {
+        text-shadow: 5px 5px 5px #c7c7c7;
+        cursor: pointer;
+      }
+    }
+
+
+    .balance {
+      display: flex;
+
+      .balance-info {
+        width: 200px;
+
+        .data-list {
+          list-style: none;
+          padding: 5px;
+          text-align: left;
+
+          li {
+            padding: 5px;
+            display: flex;
+            justify-content: space-between;
+          }
+        }
+      }
+
+      .balance-chart {
+        width: 100%;
+      }
+    }
+  }
+}
