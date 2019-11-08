@@ -6,6 +6,7 @@ import {
 import { Injectable } from '@angular/core';
 import { LoginForm, RegisterForm } from '../auth/auth.interface';
 import { UserSimple } from './user.interface';
+import { Action, Balance, Category } from '../budget/budget.interface';
 
 export class HttpQueryEncoderCodec implements HttpParameterCodec {
   encodeKey(k: string): string {
@@ -25,13 +26,6 @@ export class HttpQueryEncoderCodec implements HttpParameterCodec {
   }
 }
 
-function mergeObjects(...objs) {
-  let merged = {};
-  for (const obj of objs) {
-    merged = Object.assign(merged, obj);
-  }
-  return merged;
-}
 
 @Injectable()
 export class ApiService {
@@ -45,9 +39,17 @@ export class ApiService {
     logout: () => this.post('/rest-auth/logout/'),
 
   };
-  users = {
+  user = {
     me: () => this.get<UserSimple>('/rest-auth/user/'),
+  };
 
+  category = {
+    list: (isIncome: boolean) =>
+      this.get<Category[]>(`/category/`, { isIncome: isIncome })
+  };
+
+  balance = {
+    create: (balance: Balance) => this.post<Balance>(`/balance/`, balance),
   };
 
   constructor(public http: HttpClient) {
@@ -70,10 +72,6 @@ export class ApiService {
     return searchParams;
   }
 
-  private url(url: string, params: any = {}) {
-    const searchParams = this.buildParams(params);
-    return `${this.URL_PATH}${url}?${searchParams}`;
-  }
 
   private get<T>(url: string, params: any = {}): Promise<T> {
     const searchParams = this.buildParams(params);

@@ -24,7 +24,6 @@ export class SessionService {
     try {
       this._user$.next(JSON.parse(entry));
     } catch (e) {
-      // TODO: Error Handling required
       console.error(e);
     }
     if (this.user) {
@@ -51,7 +50,7 @@ export class SessionService {
 
   async reload() {
     try {
-      this.user = await this.api.users.me();
+      this.user = await this.api.user.me();
     } catch (e) {
       this.flush();
       this.router.navigate(['/login']);

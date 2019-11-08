@@ -1,7 +1,7 @@
 <mat-card class="balance-card">
   <div class="title-row">
     <span class="text-capitalize">{{action}}</span>
-    <mat-icon color="accent" routerLink="{{action}}">add_circle</mat-icon>
+    <mat-icon color="accent" (click)="openDialog()">add_circle</mat-icon>
   </div>
   <mat-card-content class="balance">
     <div class="balance-info">
