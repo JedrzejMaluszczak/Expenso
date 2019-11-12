@@ -26,6 +26,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('./budget/budget.module').then(m => m.BudgetModule),
   },
+
+  {
+    path: 'categories',
+    canActivate: [AuthenticatedGuard],
+    loadChildren: () =>
+      import('./categories/categories.module').then(m => m.CategoriesModule)
+
+  }
 ];
 
 @NgModule({

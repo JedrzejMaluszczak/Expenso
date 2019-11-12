@@ -1,12 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 
-import { Action, Category, Summary } from '../budget.interface';
+import { Action, Summary } from '../budget.interface';
 import {
   AddBalanceDialogComponent
 } from '../add-balance-dialog/add-balance-dialog.component';
-import { BudgetService } from '../budget.service';
 import { ApiService } from '../../core/api.service';
+import { BudgetService } from '../budget.service';
+import { Category } from '../../categories/categories.interface';
 
 export interface DialogData {
   categories: Category[];
@@ -22,7 +23,7 @@ export class BalanceComponent implements OnInit {
 
   @Input() action: Action;
 
-  @Input()summary: Summary;
+  @Input() summary: Summary;
 
   constructor(
     private dialog: MatDialog,

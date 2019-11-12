@@ -9,12 +9,15 @@ from balance.serializers import (
     CategorySerializer,
     BalanceSerializer,
     CategorySimplySerializer,
+    CategoryBalanceSerializer,
 )
 
 
 class CategoryView(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
     serializer_class = CategorySerializer
+
+    def get_queryset(self):
+        return Category.objects.filter(user=self.request.user)
 
     def list(self, request, *args, **kwargs):
 
@@ -24,10 +27,36 @@ class CategoryView(viewsets.ModelViewSet):
         )
         return Response(CategorySimplySerializer(categories, many=True).data)
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(
+            data={
+                **request.data,
+                "user": request.user.id
+            }
+        )
+        serializer.is_valid(raise_exception=True)
+
+        category = Category.objects.create(**serializer.validated_data)
+
+        return Response(
+            CategoryBalanceSerializer(category).data,
+            status=status.HTTP_201_CREATED
+        )
+
+    @action(methods=["get"], detail=False)
+    def list_with_balance(self, request, *args, **kwargs):
+        categories = Category.objects.filter(
+            user=request.user,
+            is_income=(request.query_params.get("isIncome") == "true"),
+        )
+        return Response(CategoryBalanceSerializer(categories, many=True).data)
+
 
 class BalanceView(viewsets.ModelViewSet):
-    queryset = Balance.objects.all()
     serializer_class = BalanceSerializer
+
+    def get_queryset(self):
+        return Balance.objects.filter(category__user=self.request.user)
 
     @action(methods=["get"], detail=False)
     def balance_summary(self, request, *args, **kwargs):
