@@ -20,7 +20,8 @@ export class AddBalanceDialogComponent implements OnInit {
     private datePipe: DatePipe,
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AddBalanceDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    ) {
   }
 
   ngOnInit() {

@@ -1,0 +1,23 @@
+<h3>{{data.name}}</h3>
+<mat-form-field>
+  <input
+    matInput
+    type="text"
+    placeholder="name"
+    [(ngModel)]="name"
+  >
+</mat-form-field>
+<div mat-dialog-actions>
+  <button
+    mat-raised-button
+    color="primary"
+    [mat-dialog-close]="name"
+  >Save
+  </button>
+  <button
+    mat-raised-button
+    color="accent"
+    [mat-dialog-close]=""
+  >Close
+  </button>
+</div>

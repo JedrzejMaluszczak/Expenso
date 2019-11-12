@@ -1,5 +1,13 @@
 :host {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
+  text-align: center;
+
+  .balance-cards {
+    text-align: left;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
 }

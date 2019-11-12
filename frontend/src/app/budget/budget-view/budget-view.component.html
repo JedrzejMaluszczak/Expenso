@@ -1,8 +1,11 @@
-<app-balance
-  [action]="action.Incomes"
-  [summary]="summary.incomes"
-></app-balance>
-<app-balance
-  [action]="action.Expenses"
-  [summary]="summary.expenses"
-></app-balance>
+<h1>Budget</h1>
+<div class="balance-cards">
+  <app-balance
+    [action]="action.Incomes"
+    [summary]="summary.incomes"
+  ></app-balance>
+  <app-balance
+    [action]="action.Expenses"
+    [summary]="summary.expenses"
+  ></app-balance>
+</div>

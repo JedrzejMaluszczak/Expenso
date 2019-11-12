@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Action } from '../../budget/budget.interface';
 import { ActivatedRoute } from '@angular/router';
+
+import { Action } from '../../budget/budget.interface';
 import { CategoryBalance } from '../categories.interface';
 
 @Component({
