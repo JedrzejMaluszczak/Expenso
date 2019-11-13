@@ -3,13 +3,17 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { BudgetViewComponent } from './budget-view/budget-view.component';
 import { BalanceSummaryResolverService } from './balance-summary.resolver.service';
+import { AnnualBalanceResolverService } from './annual-balance.resolver.service';
 
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    resolve: { balanceSummary: BalanceSummaryResolverService },
+    resolve: {
+      balanceSummary: BalanceSummaryResolverService,
+      annualBalance: AnnualBalanceResolverService,
+    },
     component: BudgetViewComponent,
   },
 ];

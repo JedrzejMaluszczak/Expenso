@@ -1,10 +1,17 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import { MatDialog } from '@angular/material';
 
-import { Action, Summary } from '../budget.interface';
-import {
-  AddBalanceDialogComponent
-} from '../add-balance-dialog/add-balance-dialog.component';
+import { Chart } from 'chart.js';
+
+import { Action, AnnualBalance, Summary } from '../budget.interface';
+import { AddBalanceDialogComponent } from '../add-balance-dialog/add-balance-dialog.component';
 import { ApiService } from '../../core/api.service';
 import { BudgetService } from '../budget.service';
 import { Category } from '../../categories/categories.interface';
@@ -19,20 +26,37 @@ export interface DialogData {
   templateUrl: './balance.component.html',
   styleUrls: ['./balance.component.scss']
 })
-export class BalanceComponent implements OnInit {
-
+export class BalanceComponent implements AfterViewInit, OnChanges {
   @Input() action: Action;
-
   @Input() summary: Summary;
+  chart = [];
 
   constructor(
     private dialog: MatDialog,
     private api: ApiService,
     private budgetService: BudgetService,
+    private cdr: ChangeDetectorRef,
   ) {
   }
 
-  ngOnInit() {
+  private _annualBalance;
+
+  get annualBalance() {
+    return this._annualBalance;
+  }
+
+  @Input() set annualBalance(annualBalance: AnnualBalance) {
+    this._annualBalance = annualBalance;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes.annualBalance.firstChange) {
+      this.generateChart();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.generateChart()
   }
 
   async openDialog() {
@@ -52,5 +76,37 @@ export class BalanceComponent implements OnInit {
         this.budgetService.createBalanceRecord(result)
       }
     });
+  }
+
+
+  generateChart() {
+    this.chart = new Chart('chart-' + this.action, {
+      type: 'bar',
+      data: {
+        labels: this.annualBalance.months,
+        datasets: [
+          {
+            data: this.annualBalance[this.action],
+            backgroundColor: '#3f51b5',
+            fill: true,
+          },
+        ]
+      },
+      options: {
+        legend: {
+          display: false
+        },
+        scales: {
+          xAxes: [{
+            display: true
+          }],
+          yAxes: [{
+            display: true
+          }],
+        }
+      }
+    });
+
+    this.cdr.detectChanges();
   }
 }

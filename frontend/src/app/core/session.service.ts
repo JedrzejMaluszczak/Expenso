@@ -24,7 +24,6 @@ export class SessionService {
     private router: Router,
     private api: ApiService,
   ) {
-    console.log('ssesionservice')
     const entry = localStorage.getItem(this.USER_KEY);
     try {
       this._user$.next(JSON.parse(entry));

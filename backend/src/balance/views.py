@@ -1,5 +1,7 @@
+import calendar
 import datetime
 
+from dateutil.relativedelta import relativedelta
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -20,7 +22,6 @@ class CategoryView(viewsets.ModelViewSet):
         return Category.objects.filter(user=self.request.user)
 
     def list(self, request, *args, **kwargs):
-
         categories = Category.objects.filter(
             user=request.user,
             is_income=(request.query_params.get("isIncome") == "true"),
@@ -28,19 +29,13 @@ class CategoryView(viewsets.ModelViewSet):
         return Response(CategorySimplySerializer(categories, many=True).data)
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(
-            data={
-                **request.data,
-                "user": request.user.id
-            }
-        )
+        serializer = self.get_serializer(data={**request.data, "user": request.user.id})
         serializer.is_valid(raise_exception=True)
 
         category = Category.objects.create(**serializer.validated_data)
 
         return Response(
-            CategoryBalanceSerializer(category).data,
-            status=status.HTTP_201_CREATED
+            CategoryBalanceSerializer(category).data, status=status.HTTP_201_CREATED
         )
 
     @action(methods=["get"], detail=False)
@@ -109,3 +104,27 @@ class BalanceView(viewsets.ModelViewSet):
         }
 
         return Response(status=status.HTTP_200_OK, data=result)
+
+    @action(methods=["get"], detail=False)
+    def annual_balance(self, request, *args, **kwargs):
+        today = datetime.date.today()
+        balance_list = Balance.objects.filter(category__user=request.user)
+        annual_balance = {"months": [], "incomes": [], "expenses": []}
+
+        for i in range(11, -1, -1):
+            current_date = today - relativedelta(months=i)
+            month = current_date.month
+            balances = balance_list.filter(date__month=month)
+
+            monthly_incomes = sum(
+                balance.amount for balance in balances if balance.category.is_income
+            )
+            monthly_expenses = sum(
+                balance.amount for balance in balances if not balance.category.is_income
+            )
+
+            annual_balance["months"].append(calendar.month_abbr[current_date.month])
+            annual_balance["incomes"].append(monthly_incomes)
+            annual_balance["expenses"].append(monthly_expenses)
+
+        return Response(status=status.HTTP_200_OK, data=annual_balance)

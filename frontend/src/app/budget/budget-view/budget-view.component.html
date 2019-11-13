@@ -1,11 +1,15 @@
 <h1>Budget</h1>
 <div class="balance-cards">
   <app-balance
+    *ngIf="annualBalance"
     [action]="action.Incomes"
+    [annualBalance]="annualBalance"
     [summary]="summary.incomes"
   ></app-balance>
   <app-balance
+    *ngIf="annualBalance"
     [action]="action.Expenses"
+    [annualBalance]="annualBalance"
     [summary]="summary.expenses"
   ></app-balance>
 </div>

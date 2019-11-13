@@ -31,6 +31,7 @@
 
     .balance {
       display: flex;
+      flex-wrap: wrap;
 
       .balance-info {
         width: 200px;

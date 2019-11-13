@@ -18,3 +18,10 @@ export interface Summary {
   monthly: number;
   total: number;
 }
+
+
+export interface AnnualBalance {
+  months: string[];
+  incomes: number[];
+  expenses: number[];
+}

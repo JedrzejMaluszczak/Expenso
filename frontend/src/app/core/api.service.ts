@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { LoginForm, RegisterForm } from '../auth/auth.interface';
 import { UserSimple } from './user.interface';
 import {
+  AnnualBalance,
   Balance,
   BalanceSummary,
 } from '../budget/budget.interface';
@@ -77,6 +78,7 @@ export class ApiService {
   balance = {
     create: (balance: Balance) => this.post<Balance>(`/balance/`, balance),
     summary: () => this.get<BalanceSummary>(`/balance/balance_summary/`),
+    annualBalance: () => this.get<AnnualBalance>(`/balance/annual_balance/`)
   };
 
   constructor(public http: HttpClient) {
