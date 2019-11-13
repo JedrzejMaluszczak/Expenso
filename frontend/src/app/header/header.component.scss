@@ -14,4 +14,17 @@
     display: flex;
     justify-content: space-between;
   }
+
+  .navigation {
+    display: flex;
+
+    .navigation-link {
+      vertical-align: middle;
+      line-height: 64px;
+      text-decoration: none;
+      color: white;
+      padding: 0 15px;
+      font-size: 15px;
+    }
+  }
 }

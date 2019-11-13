@@ -5,7 +5,6 @@ import { MatIconModule } from '@angular/material';
 import { MaterialModule } from './material.module';
 import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
-import { SessionService } from './session.service';
 import { NotAuthenticatedGuard } from './guards/not-auth.guard';
 import { AuthenticatedGuard } from './guards/auth.guard';
 
@@ -17,7 +16,6 @@ import { AuthenticatedGuard } from './guards/auth.guard';
     AuthService,
     AuthenticatedGuard,
     NotAuthenticatedGuard,
-    SessionService,
   ],
   exports: [MaterialModule],
 })

@@ -31,7 +31,11 @@ export class HttpQueryEncoderCodec implements HttpParameterCodec {
 }
 
 
-@Injectable()
+@Injectable(
+  {
+    providedIn: 'root'
+  }
+)
 export class ApiService {
   URL_PATH = '/api';
   auth = {

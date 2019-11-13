@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { BehaviorSubject } from 'rxjs';
 
 import { LoginForm, RegisterForm } from '../auth/auth.interface';
@@ -25,13 +26,13 @@ export class AuthService {
   async register(formData: RegisterForm) {
     await this.api.auth.register(formData);
     await this.session.reload();
-    this.router.navigate(['']);
+    this.router.navigate(['/budget']);
   }
 
   async login(formData: LoginForm) {
     await this.api.auth.login(formData);
     await this.session.reload();
-    const url = this.session.popNextUrl() || '/budget';
+    const url = this.session.popNextUrl();
     this.router.navigate([url]);
   }
 

@@ -6,7 +6,11 @@ import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
 import { UserSimple } from './user.interface';
 
-@Injectable()
+@Injectable(
+  {
+    providedIn: 'root'
+  }
+)
 export class SessionService {
 
   private USER_KEY = 'user';
@@ -20,6 +24,7 @@ export class SessionService {
     private router: Router,
     private api: ApiService,
   ) {
+    console.log('ssesionservice')
     const entry = localStorage.getItem(this.USER_KEY);
     try {
       this._user$.next(JSON.parse(entry));
@@ -63,7 +68,6 @@ export class SessionService {
 
   popNextUrl() {
     const url = this._nextUrl;
-    // reset - this is one-time use value
     this._nextUrl = '';
     return url;
   }

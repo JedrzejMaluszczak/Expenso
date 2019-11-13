@@ -8,14 +8,8 @@ import { AuthenticatedGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    pathMatch: 'full',
-    component: LandingPageComponent,
-    canActivate: [NotAuthenticatedGuard],
-  },
-
-  {
     path: 'auth',
+    canActivate: [NotAuthenticatedGuard],
     loadChildren: () => import('./auth/auth.module')
       .then(m => m.AuthModule),
   },
@@ -33,6 +27,17 @@ const routes: Routes = [
     loadChildren: () =>
       import('./categories/categories.module').then(m => m.CategoriesModule)
 
+  },
+
+  {
+    path: '',
+    pathMatch: 'full',
+    component: LandingPageComponent,
+    canActivate: [NotAuthenticatedGuard],
+  },
+  {
+    path: '**',
+    redirectTo: '',
   }
 ];
 

@@ -1,7 +1,13 @@
 <mat-toolbar color="primary" class="toolbar">
-  <div class="logo" routerLink="">
-    <img src="../../assets/dolar.png" class="icon">
-    Expenso
+  <div class="navigation">
+    <div class="logo" routerLink="">
+      <img src="../../assets/dolar.png" class="icon">
+      Expenso
+    </div>
+    <div *ngIf="(isLoggedIn | async)">
+      <a routerLink="/categories" class="navigation-link">Categories</a>
+      <a routerLink="/budget" class="navigation-link">Budget</a>
+    </div>
   </div>
   <span
     routerLink="/auth/login"

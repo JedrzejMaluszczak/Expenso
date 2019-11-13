@@ -8,6 +8,7 @@ import { BalanceSummaryResolverService } from './balance-summary.resolver.servic
 const routes: Routes = [
   {
     path: '',
+    pathMatch: 'full',
     resolve: { balanceSummary: BalanceSummaryResolverService },
     component: BudgetViewComponent,
   },
