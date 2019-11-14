@@ -4,12 +4,16 @@
     *ngIf="annualBalance"
     [action]="action.Incomes"
     [annualBalance]="annualBalance"
-    [summary]="summary.incomes"
+    [total]="summary.incomeTotal"
+    [monthly]="summary.incomeMonthly"
+    [today]="summary.incomeToday"
   ></app-balance>
   <app-balance
     *ngIf="annualBalance"
     [action]="action.Expenses"
     [annualBalance]="annualBalance"
-    [summary]="summary.expenses"
+    [total]="summary.expensesTotal"
+    [monthly]="summary.expensesMonthly"
+    [today]="summary.expensesToday"
   ></app-balance>
 </div>

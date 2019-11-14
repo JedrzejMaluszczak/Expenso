@@ -2,9 +2,8 @@ import calendar
 import datetime
 from collections import defaultdict
 
-from django.db import connection
 from dateutil.relativedelta import relativedelta
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.db.models.functions import Coalesce
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
@@ -62,36 +61,36 @@ class BalanceView(viewsets.ModelViewSet):
         user_balances = Balance.objects.filter(category__user=request.user)
         today = datetime.date.today()
 
-        income_total = user_balances.filter(category__is_income=True).aggregate(
-            total=Coalesce(Sum("amount"), 0)
+        q_incomes_total = Q(category__user=request.user, category__is_income=True)
+        q_incomes_monthly = Q(
+            category__user=request.user,
+            category__is_income=True,
+            date__month=today.month,
+        )
+        q_incomes_today = Q(
+            category__user=request.user, category__is_income=True, date=today
         )
 
-        income_monthly = user_balances.filter(
-            category__is_income=True, date__month=today.month
-        ).aggregate(monthly=Coalesce(Sum("amount"), 0))
-
-        income_today = user_balances.filter(
-            category__is_income=True, date=today
-        ).aggregate(today=Coalesce(Sum("amount"), 0))
-
-        expenses_total = user_balances.filter(category__is_income=False).aggregate(
-            total=Coalesce(Sum("amount"), 0)
+        q_expenses_total = Q(category__user=request.user, category__is_income=False)
+        q_expenses_monthly = Q(
+            category__user=request.user,
+            category__is_income=False,
+            date__month=today.month,
+        )
+        q_expenses_today = Q(
+            category__user=request.user, category__is_income=False, date=today
         )
 
-        expenses_monthly = user_balances.filter(
-            category__is_income=False, date__month=today.month
-        ).aggregate(monthly=Coalesce(Sum("amount"), 0))
+        aggregated_balance = user_balances.aggregate(
+            income_total=Coalesce(Sum("amount", filter=q_incomes_total), 0),
+            income_monthly=Coalesce(Sum("amount", filter=q_incomes_monthly), 0),
+            income_today=Coalesce(Sum("amount", filter=q_incomes_today), 0),
+            expenses_total=Coalesce(Sum("amount", filter=q_expenses_total), 0),
+            expenses_monthly=Coalesce(Sum("amount", filter=q_expenses_monthly), 0),
+            expenses_today=Coalesce(Sum("amount", filter=q_expenses_today), 0),
+        )
 
-        expenses_today = user_balances.filter(
-            category__is_income=False, date=today
-        ).aggregate(today=Coalesce(Sum("amount"), 0))
-
-        result = {
-            "incomes": {**income_total, **income_monthly, **income_today},
-            "expenses": {**expenses_total, **expenses_monthly, **expenses_today},
-        }
-
-        return Response(status=status.HTTP_200_OK, data=result)
+        return Response(status=status.HTTP_200_OK, data=aggregated_balance)
 
     @action(methods=["get"], detail=False)
     def annual_balance(self, request, *args, **kwargs):

@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material';
 
 import { Chart } from 'chart.js';
 
-import { Action, AnnualBalance, Summary } from '../budget.interface';
+import { Action, AnnualBalance } from '../budget.interface';
 import { AddBalanceDialogComponent } from '../add-balance-dialog/add-balance-dialog.component';
 import { ApiService } from '../../core/api.service';
 import { BudgetService } from '../budget.service';
@@ -28,7 +28,9 @@ export interface DialogData {
 })
 export class BalanceComponent implements AfterViewInit, OnChanges {
   @Input() action: Action;
-  @Input() summary: Summary;
+  @Input() total: number;
+  @Input() monthly: number;
+  @Input() today: number;
   chart = [];
 
   constructor(

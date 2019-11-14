@@ -9,16 +9,13 @@ export interface Balance {
 }
 
 export interface BalanceSummary {
-  incomes: Summary;
-  expenses: Summary;
+  incomeTotal: number;
+  incomeMonthly: number;
+  incomeToday: number;
+  expensesTotal: number;
+  expensesMonthly: number;
+  expensesToday: number;
 }
-
-export interface Summary {
-  today: number;
-  monthly: number;
-  total: number;
-}
-
 
 export interface AnnualBalance {
   months: string[];
