@@ -1,7 +1,11 @@
 import calendar
 import datetime
+from collections import defaultdict
 
+from django.db import connection
 from dateutil.relativedelta import relativedelta
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -55,52 +59,36 @@ class BalanceView(viewsets.ModelViewSet):
 
     @action(methods=["get"], detail=False)
     def balance_summary(self, request, *args, **kwargs):
-        incomes = Balance.objects.filter(
-            category__user=request.user, category__is_income=True
-        )
-        expenses = Balance.objects.filter(
-            category__user=request.user, category__is_income=False
-        )
-
+        user_balances = Balance.objects.filter(category__user=request.user)
         today = datetime.date.today()
 
-        total_incomes = 0
-        monthly_incomes = 0
-        today_incomes = 0
+        income_total = user_balances.filter(category__is_income=True).aggregate(
+            total=Coalesce(Sum("amount"), 0)
+        )
 
-        for income in incomes:
-            total_incomes += income.amount
+        income_monthly = user_balances.filter(
+            category__is_income=True, date__month=today.month
+        ).aggregate(monthly=Coalesce(Sum("amount"), 0))
 
-            if income.date.month == today.month:
-                monthly_incomes += income.amount
+        income_today = user_balances.filter(
+            category__is_income=True, date=today
+        ).aggregate(today=Coalesce(Sum("amount"), 0))
 
-            if income.date == today:
-                today_incomes += income.amount
+        expenses_total = user_balances.filter(category__is_income=False).aggregate(
+            total=Coalesce(Sum("amount"), 0)
+        )
 
-        total_expenses = 0
-        monthly_expenses = 0
-        today_expenses = 0
+        expenses_monthly = user_balances.filter(
+            category__is_income=False, date__month=today.month
+        ).aggregate(monthly=Coalesce(Sum("amount"), 0))
 
-        for expense in expenses:
-            total_expenses += expense.amount
-
-            if expense.date.month == today.month:
-                monthly_expenses += expense.amount
-
-            if expense.date == today:
-                today_expenses += expense.amount
+        expenses_today = user_balances.filter(
+            category__is_income=False, date=today
+        ).aggregate(today=Coalesce(Sum("amount"), 0))
 
         result = {
-            "incomes": {
-                "total": total_incomes,
-                "monthly": monthly_incomes,
-                "today": today_incomes,
-            },
-            "expenses": {
-                "total": total_expenses,
-                "monthly": monthly_expenses,
-                "today": today_expenses,
-            },
+            "incomes": {**income_total, **income_monthly, **income_today},
+            "expenses": {**expenses_total, **expenses_monthly, **expenses_today},
         }
 
         return Response(status=status.HTTP_200_OK, data=result)
@@ -109,22 +97,33 @@ class BalanceView(viewsets.ModelViewSet):
     def annual_balance(self, request, *args, **kwargs):
         today = datetime.date.today()
         balance_list = Balance.objects.filter(category__user=request.user)
-        annual_balance = {"months": [], "incomes": [], "expenses": []}
+        incomes_sum_qs = (
+            balance_list.filter(category__is_income=True)
+            .order_by("date__month")
+            .values("date__month")
+            .annotate(Sum("amount"))
+        )
 
+        expenses_sum_qs = (
+            balance_list.filter(category__is_income=False)
+            .order_by("date__month")
+            .values("date__month")
+            .annotate(Sum("amount"))
+        )
+
+        incomes_dict = {
+            balance["date__month"]: balance["amount__sum"] for balance in incomes_sum_qs
+        }
+        expenses_dict = {
+            balance["date__month"]: balance["amount__sum"]
+            for balance in expenses_sum_qs
+        }
+
+        annual_balance = defaultdict(list)
         for i in range(11, -1, -1):
             current_date = today - relativedelta(months=i)
-            month = current_date.month
-            balances = balance_list.filter(date__month=month)
-
-            monthly_incomes = sum(
-                balance.amount for balance in balances if balance.category.is_income
-            )
-            monthly_expenses = sum(
-                balance.amount for balance in balances if not balance.category.is_income
-            )
-
             annual_balance["months"].append(calendar.month_abbr[current_date.month])
-            annual_balance["incomes"].append(monthly_incomes)
-            annual_balance["expenses"].append(monthly_expenses)
+            annual_balance["incomes"].append(incomes_dict.get(current_date.month, 0))
+            annual_balance["expenses"].append(expenses_dict.get(current_date.month, 0))
 
         return Response(status=status.HTTP_200_OK, data=annual_balance)
