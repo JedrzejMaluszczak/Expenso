@@ -1,5 +1,5 @@
 <mat-toolbar color="primary" class="toolbar">
-  <div class="navigation">
+  <div *ngIf="!responsivenessService.isMobile; else mobile" class="navigation">
     <div class="logo" routerLink="">
       <img src="../../assets/dolar.png" class="icon">
       Expenso
@@ -18,3 +18,19 @@
     *ngIf="(isLoggedIn | async)"
   >Logout</span>
 </mat-toolbar>
+
+<ng-template #mobile>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <a mat-menu-item routerLink="/budget">
+      <mat-icon>monetization_on</mat-icon>
+      <span>Budget</span>
+    </a>
+    <a mat-menu-item routerLink="/categories">
+      <mat-icon>category</mat-icon>
+      <span>Categories</span>
+    </a>
+  </mat-menu>
+</ng-template>

@@ -7,6 +7,7 @@ import { ApiService } from './api.service';
 import { AuthService } from './auth.service';
 import { NotAuthenticatedGuard } from './guards/not-auth.guard';
 import { AuthenticatedGuard } from './guards/auth.guard';
+import { ResponsivenessService } from './responsiveness.service';
 
 @NgModule({
   declarations: [],
@@ -16,6 +17,7 @@ import { AuthenticatedGuard } from './guards/auth.guard';
     AuthService,
     AuthenticatedGuard,
     NotAuthenticatedGuard,
+    ResponsivenessService,
   ],
   exports: [MaterialModule],
 })

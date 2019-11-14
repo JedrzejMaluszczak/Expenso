@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { AuthService } from '../core/auth.service';
+import { ResponsivenessService } from '../core/responsiveness.service';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +16,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private auth: AuthService,
+    private responsivenessService:ResponsivenessService,
   ) {
   }
 
