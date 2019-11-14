@@ -1,5 +1,15 @@
-import { Component, Input, OnInit, } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { MatDialog, MatTableDataSource } from '@angular/material';
+
+import { Chart } from 'chart.js';
 
 import { Action } from '../../budget/budget.interface';
 import { CategoryBalance } from '../categories.interface';
@@ -11,7 +21,7 @@ import { CategoryDialogComponent } from '../category-dialog/category-dialog.comp
   templateUrl: './category-list.component.html',
   styleUrls: ['./category-list.component.scss']
 })
-export class CategoryListComponent implements OnInit {
+export class CategoryListComponent implements OnInit, AfterViewInit, OnChanges {
   dataSource = new MatTableDataSource<CategoryBalance>();
 
   displayedColumns = ['name', 'balance', 'action'];
@@ -20,11 +30,24 @@ export class CategoryListComponent implements OnInit {
 
   @Input() categories: CategoryBalance[];
 
+  chart = [];
+
 
   constructor(
     private api: ApiService,
     private dialog: MatDialog,
+    private cdr: ChangeDetectorRef,
   ) {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.categories && !changes.categories.firstChange) {
+      this.generateChart();
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.generateChart()
   }
 
   ngOnInit() {
@@ -33,10 +56,11 @@ export class CategoryListComponent implements OnInit {
 
   remove(id: number) {
     this.api.category.remove(id);
-
-    this.dataSource.data = this.dataSource.data.filter(
-      category => category.id !== id
+    this.categories = this.categories.filter(
+      category=> category.id !== id
     );
+    this.dataSource.data=this.categories
+    this.generateChart();
   }
 
   openUpdateDialog(category: CategoryBalance) {
@@ -68,5 +92,53 @@ export class CategoryListComponent implements OnInit {
         this.dataSource._updateChangeSubscription();
       }
     })
+  }
+
+  generateChart() {
+    const labels = [];
+    const data = [];
+    const colors = [];
+    for (let i = 0; i < this.categories.length; i++) {
+      labels.push(this.categories[i].name);
+      data.push(this.categories[i].categoryBalance);
+      colors.push(this.getRandomColor())
+    }
+    this.chart = new Chart('chart-' + this.action, {
+      type: 'pie',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            data: data,
+            backgroundColor: colors,
+            fill: true,
+          },
+        ]
+      },
+      options: {
+        legend: {
+          display: true
+        },
+        scales: {
+          xAxes: [{
+            display: false
+          }],
+          yAxes: [{
+            display: false
+          }],
+        }
+      }
+    });
+
+    this.cdr.detectChanges();
+  }
+
+  private getRandomColor() {
+    const letters = '0123456789ABCDEF'.split('');
+    let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+    return color;
   }
 }

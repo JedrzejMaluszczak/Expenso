@@ -47,5 +47,8 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
     </table>
+        <div class="balance-chart">
+      <canvas id="chart-{{action}}">{{ chart }}</canvas>
+    </div>
   </mat-card-content>
 </mat-card>

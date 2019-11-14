@@ -52,7 +52,7 @@ export class BalanceComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.annualBalance.firstChange) {
+    if (changes.annualBalance && !changes.annualBalance.firstChange) {
       this.generateChart();
     }
   }
