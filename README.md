@@ -1,4 +1,5 @@
 # Expenso
+## Application to control expenses
 
 ##  To run front-end locally
 * Install the Angular CLI globally:
