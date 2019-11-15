@@ -3,7 +3,11 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { ApiService } from '../core/api.service';
-import { AnnualBalance, Balance, BalanceSummary } from './budget.interface';
+import {
+  AnnualBalance,
+  SimplyBalance,
+  BalanceSummary
+} from './budget.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +23,7 @@ export class BudgetService {
   ) {
   }
 
-  async createBalanceRecord(balance: Balance) {
+  async createBalanceRecord(balance: SimplyBalance) {
     this.api.balance.create(balance);
     const balanceSummary = await this.api.balance.summary();
     this._balanaceSummary.next(balanceSummary);

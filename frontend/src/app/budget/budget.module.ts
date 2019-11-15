@@ -9,6 +9,9 @@ import { BalanceComponent } from './balance/balance.component';
 import {
   AddBalanceDialogComponent
 } from './add-balance-dialog/add-balance-dialog.component';
+import {
+  TransactionsViewComponent
+} from './transactions-view/transactions-view.component';
 
 
 @NgModule({
@@ -16,6 +19,7 @@ import {
     BudgetViewComponent,
     BalanceComponent,
     AddBalanceDialogComponent,
+    TransactionsViewComponent,
   ],
   imports: [
     CommonModule,

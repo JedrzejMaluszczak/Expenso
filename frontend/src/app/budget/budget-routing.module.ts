@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import { BudgetViewComponent } from './budget-view/budget-view.component';
 import { BalanceSummaryResolverService } from './balance-summary.resolver.service';
 import { AnnualBalanceResolverService } from './annual-balance.resolver.service';
+import { TransactionsResolverService } from './transactions.resolver.service';
+import { TransactionsViewComponent } from './transactions-view/transactions-view.component';
 
 
 const routes: Routes = [
@@ -15,6 +17,11 @@ const routes: Routes = [
       annualBalance: AnnualBalanceResolverService,
     },
     component: BudgetViewComponent,
+  },
+  {
+    path: 'transactions',
+    resolve: { transactions: TransactionsResolverService },
+    component: TransactionsViewComponent,
   },
 ];
 

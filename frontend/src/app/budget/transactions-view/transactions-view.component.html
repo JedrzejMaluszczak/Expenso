@@ -1,0 +1,74 @@
+<mat-card>
+  <mat-card-title>Transactions</mat-card-title>
+  <mat-card-content>
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.target.value)"
+             placeholder="Filter">
+    </mat-form-field>
+
+    <div>
+      <table mat-table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Date</th>
+          <td mat-cell *matCellDef="let element"> {{element.date}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> amount</th>
+          <td mat-cell *matCellDef="let element"> {{element.amount}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="note">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            [style.display]="responsivenessService.isMobile?'none':'table-cell'"
+          > Note
+          </th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            [style.display]="responsivenessService.isMobile?'none':'table-cell'"
+          > {{element.note || '-'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="category.name">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Category</th>
+          <td mat-cell
+              *matCellDef="let element"> {{element.category.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="category.isIncome">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Type</th>
+          <td
+            mat-cell
+            *matCellDef="let element"
+            [style.color]="element.category.isIncome?'green':'red'"
+          >
+            {{element.category.isIncome ? 'income' : 'expense'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> Action</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-icon
+              class="action-icon"
+              color="primary"
+              [matTooltip]="'remove'"
+              (click)="remove(element.id)"
+            >remove_circle_outline
+            </mat-icon>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+        </tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[10, 25, 100]"></mat-paginator>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -12,9 +12,10 @@ from rest_framework.response import Response
 from balance.models import Category, Balance
 from balance.serializers import (
     CategorySerializer,
-    BalanceSerializer,
+    SimplyBalanceSerializer,
     CategorySimplySerializer,
     CategoryBalanceSerializer,
+    BalanceSerializer,
 )
 
 
@@ -51,10 +52,14 @@ class CategoryView(viewsets.ModelViewSet):
 
 
 class BalanceView(viewsets.ModelViewSet):
-    serializer_class = BalanceSerializer
+    serializer_class = SimplyBalanceSerializer
 
     def get_queryset(self):
         return Balance.objects.filter(category__user=self.request.user)
+
+    def list(self, request, *args, **kwargs):
+        self.serializer_class = BalanceSerializer
+        return super().list(request, *args, **kwargs)
 
     @action(methods=["get"], detail=False)
     def balance_summary(self, request, *args, **kwargs):

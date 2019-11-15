@@ -9,6 +9,7 @@
       type="number"
       placeholder="Amount"
       formControlName="amount"
+      (keydown)="preventOverTwoDecimal($event)"
     >
   </mat-form-field>
 

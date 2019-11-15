@@ -8,8 +8,9 @@ import { LoginForm, RegisterForm } from '../auth/auth.interface';
 import { UserSimple } from './user.interface';
 import {
   AnnualBalance,
-  Balance,
   BalanceSummary,
+  FullBalance,
+  SimplyBalance,
 } from '../budget/budget.interface';
 import { Category, CategoryBalance } from '../categories/categories.interface';
 
@@ -76,9 +77,12 @@ export class ApiService {
   };
 
   balance = {
-    create: (balance: Balance) => this.post<Balance>(`/balance/`, balance),
+    create: (balance: SimplyBalance) =>
+      this.post<SimplyBalance>(`/balance/`, balance),
+    remove: (id: number) => this.delete(`/balance/${id}/`),
     summary: () => this.get<BalanceSummary>(`/balance/balance_summary/`),
-    annualBalance: () => this.get<AnnualBalance>(`/balance/annual_balance/`)
+    annualBalance: () => this.get<AnnualBalance>(`/balance/annual_balance/`),
+    list: () => this.get<FullBalance>(`/balance/`),
   };
 
   constructor(public http: HttpClient) {

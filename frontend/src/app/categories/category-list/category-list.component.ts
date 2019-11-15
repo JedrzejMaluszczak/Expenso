@@ -47,7 +47,7 @@ export class CategoryListComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngAfterViewInit(): void {
-    this.generateChart()
+    this.generateChart();
   }
 
   ngOnInit() {
@@ -59,7 +59,7 @@ export class CategoryListComponent implements OnInit, AfterViewInit, OnChanges {
     this.categories = this.categories.filter(
       category=> category.id !== id
     );
-    this.dataSource.data=this.categories
+    this.dataSource.data=this.categories;
     this.generateChart();
   }
 

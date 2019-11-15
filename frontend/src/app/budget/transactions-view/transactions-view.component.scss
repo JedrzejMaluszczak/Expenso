@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  justify-content: center;
+
+  mat-card {
+    max-width: 1000px;
+    width: 100%;
+    margin: 10px;
+
+    table {
+      width: 100%;
+
+      .action-icon {
+        text-shadow: 2px 2px 2px #c7c7c7;
+        cursor: pointer;
+      }
+    }
+  }
+}

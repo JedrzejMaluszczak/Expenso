@@ -30,7 +30,14 @@ class CategoryBalanceSerializer(serializers.ModelSerializer):
         return category_balance
 
 
+class SimplyBalanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Balance
+        fields = "__all__"
+
+
 class BalanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Balance
         fields = "__all__"
+        depth = 1

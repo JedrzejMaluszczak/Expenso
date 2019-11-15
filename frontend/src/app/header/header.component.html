@@ -7,6 +7,8 @@
     <div *ngIf="(isLoggedIn | async)">
       <a routerLink="/categories" class="navigation-link">Categories</a>
       <a routerLink="/budget" class="navigation-link">Budget</a>
+      <a routerLink="/budget/transactions" class="navigation-link">
+        Transactions</a>
     </div>
   </div>
   <span
@@ -31,6 +33,10 @@
     <a mat-menu-item routerLink="/categories">
       <mat-icon>category</mat-icon>
       <span>Categories</span>
+    </a>
+    <a mat-menu-item routerLink="/budget/transactions">
+      <mat-icon>list_alt</mat-icon>
+      <span>Transactions</span>
     </a>
   </mat-menu>
 </ng-template>
