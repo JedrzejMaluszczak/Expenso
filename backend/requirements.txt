@@ -1,5 +1,5 @@
 Django==2.2.7
-djangorestframework==3.10.3
+djangorestframework==3.11.2
 python_dateutil==2.8.1
 django-rest-auth==0.9.5
 django-allauth==0.40.0
